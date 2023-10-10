@@ -3,10 +3,14 @@
 	"package": "com.godwei.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"DispenserBehaviorInjector"
+		"DispenserBehaviorInjector",
+		"BottleExtractBehaviorInjector",
+		"IBucketFluidAccessor"
 	],
 	"server": [
-		"DispenserBehaviorInjector"
+		"DispenserBehaviorInjector",
+		"BottleExtractBehaviorInjector",
+		"IBucketFluidAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

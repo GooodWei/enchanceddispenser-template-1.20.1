@@ -1,5 +1,6 @@
 package com.godwei.mixin;
 
+import com.godwei.behaviors.FillCauldronBehavior;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -63,6 +64,15 @@ public class DispenserBehaviorInjector {
 				}
 			}
 		};
+
+
+
+		FillCauldronBehavior fillCauldronBehavior = new FillCauldronBehavior();
 		BEHAVIORS.put(Items.BUCKET, behavior);
+		BEHAVIORS.put(Items.WATER_BUCKET, fillCauldronBehavior);
+		BEHAVIORS.put(Items.LAVA_BUCKET, fillCauldronBehavior);
+		BEHAVIORS.put(Items.POWDER_SNOW_BUCKET, fillCauldronBehavior);
+		BEHAVIORS.put(Items.POTION, fillCauldronBehavior);
+
 	}
 }
