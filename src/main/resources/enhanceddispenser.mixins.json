@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.godwei.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"DispenserBehaviorInjector"
+	],
+	"server": [
+		"DispenserBehaviorInjector"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

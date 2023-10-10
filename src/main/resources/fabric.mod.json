@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "enhanceddispenser",
+	"version": "${version}",
+	"name": "EnhancedDispenser",
+	"description": "A mod to give vanilla dispenser more functions",
+	"authors": [
+		"GodWei"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/enhanceddispenser/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "com.godwei.EnhancedDispenser"
+		],
+		"fabric-datagen": [
+			"com.godwei.EnhancedDispenserDataGenerator"
+		]
+	},
+	"mixins": [
+		"enhanceddispenser.mixins.json",
+		{
+			"config": "enhanceddispenser.mixins.json",
+			"environment": "server"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.20",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
