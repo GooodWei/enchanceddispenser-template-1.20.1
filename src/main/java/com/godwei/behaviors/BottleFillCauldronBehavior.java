@@ -1,21 +1,24 @@
 package com.godwei.behaviors;
 
-import com.godwei.mixin.IBucketFluidAccessor;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.entity.DispenserBlockEntity;
-import net.minecraft.fluid.LavaFluid;
-import net.minecraft.fluid.WaterFluid;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.event.GameEvent;
 
-public class FillCauldronBehavior extends ItemDispenserBehavior {
+public class BottleFillCauldronBehavior extends ItemDispenserBehavior {
     private final ItemDispenserBehavior fallbackBehavior = new ItemDispenserBehavior();
 
-
+    @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
         ItemStack itemStack;
         Item item = stack.getItem();
@@ -24,31 +27,29 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
         ServerWorld world = pointer.getWorld();
         BlockState blockState = world.getBlockState(blockPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING)));
         Block block = blockState.getBlock();
-        if (!block.getClass().equals(CauldronBlock.class)) {
+        if (!(block instanceof CauldronBlock)
+                && !(block instanceof LeveledCauldronBlock)
+        ) {
             return defaultDispense(pointer, stack);
         }
-        if (((CauldronBlock) block).isFull(blockState)) {
+        if (block instanceof PowderSnowCauldronBlock) {
             return defaultDispense(pointer, stack);
         }
 
-        {
-            if (item instanceof PowderSnowBucketItem) {
+        if (PotionUtil.getPotion(stack) != Potions.WATER) {
+            return defaultDispense(pointer, stack);
+        }
 
-                world.setBlockState(blockPos, Blocks.POWDER_SNOW_CAULDRON.getDefaultState().with(PowderSnowCauldronBlock.LEVEL, 3));
-                itemStack = new ItemStack(Items.BUCKET);
-            } else {
-                BucketItem item1 = (BucketItem) item;
-                IBucketFluidAccessor fluidAccessor = (IBucketFluidAccessor) item1;
-                if (fluidAccessor.getFluid() instanceof LavaFluid) {
-                    world.setBlockState(blockPos, Blocks.LAVA_CAULDRON.getDefaultState());
-                    itemStack = new ItemStack(Items.BUCKET);
-                } else if (fluidAccessor.getFluid() instanceof WaterFluid) {
-                    world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
-                    itemStack = new ItemStack(Items.BUCKET);
-                } else {
-                    return defaultDispense(pointer, stack);
-                }
-            }
+        if (block instanceof CauldronBlock) {
+            world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState());
+            world.playSound(null, blockPos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            world.emitGameEvent(null, GameEvent.FLUID_PLACE, blockPos);
+            itemStack = new ItemStack(Items.GLASS_BOTTLE);
+        } else if (!((LeveledCauldronBlock) block).isFull(blockState)) {
+            blockState.cycle(LeveledCauldronBlock.LEVEL);
+            itemStack = new ItemStack(Items.GLASS_BOTTLE);
+        } else {
+            return defaultDispense(pointer, stack);
         }
         world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, blockPos);
         Item item2 = itemStack.getItem();
@@ -65,5 +66,4 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
     protected ItemStack defaultDispense(BlockPointer pointer, ItemStack stack) {
         return super.dispenseSilently(pointer, stack);
     }
-
 }

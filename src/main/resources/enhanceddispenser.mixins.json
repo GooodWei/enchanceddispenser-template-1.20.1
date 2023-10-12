@@ -4,12 +4,10 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"DispenserBehaviorInjector",
-		"BottleExtractBehaviorInjector",
 		"IBucketFluidAccessor"
 	],
 	"server": [
 		"DispenserBehaviorInjector",
-		"BottleExtractBehaviorInjector",
 		"IBucketFluidAccessor"
 	],
 	"injectors": {
