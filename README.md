@@ -5,8 +5,9 @@
     1:Extract and pour water , lava and powder with bucket.  
     2.Extract water in cauldron with glass bottle.  
     3.Add water to cauldron with water potion // TODO  
-  
-  这是一个简单的fabric模组，在这个模组的帮助下，原版发射器可以与炼药锅互动，并
+ 
+# 发射器增强  
+  这是一个轻量化的fabric模组，在这个模组的帮助下，原版发射器可以与炼药锅互动，并
 自动化装填和提取炼药锅。  
   这个模组支持如下功能：  
     1.用桶装填和提取水、岩浆以及细雪。  
