@@ -1,5 +1,6 @@
 package com.godwei.behaviors;
 
+import com.godwei.config.Deserialization;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.entity.DispenserBlockEntity;
@@ -15,6 +16,10 @@ public class ExtractCauldronBehavior extends ItemDispenserBehavior {
     private final ItemDispenserBehavior fallbackBehavior = new ItemDispenserBehavior();
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+        if (!Deserialization.canBucketExtract()){
+            return super.dispenseSilently(pointer, stack);
+        }
+
         ItemStack itemStack;
         BlockPos blockPos;
         ServerWorld worldAccess = pointer.getWorld();

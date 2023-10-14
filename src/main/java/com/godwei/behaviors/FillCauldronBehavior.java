@@ -1,5 +1,6 @@
 package com.godwei.behaviors;
 
+import com.godwei.config.Deserialization;
 import com.godwei.mixin.IBucketFluidAccessor;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -17,6 +18,10 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
 
 
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+        if (!Deserialization.canBucketFill()){
+            defaultDispense(pointer, stack);
+        }
+
         ItemStack itemStack;
         Item item = stack.getItem();
         pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
