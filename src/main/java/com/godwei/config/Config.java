@@ -8,14 +8,14 @@ public class Config {
     @Expose
     private boolean canBucketExtract;
     @Expose
-    private boolean canBottleFill;
+    private boolean canDyeEntities;
     @Expose
     private boolean canBottleExtract;
 
-    public Config(boolean canBucketFill, boolean canBucketExtract, boolean canBottleFill, boolean canBottleExtract) {
+    public Config(boolean canBucketFill, boolean canBucketExtract, boolean canDyeEntities, boolean canBottleExtract) {
         this.canBucketFill = canBucketFill;
         this.canBucketExtract = canBucketExtract;
-        this.canBottleFill = canBottleFill;
+        this.canDyeEntities = canDyeEntities;
         this.canBottleExtract = canBottleExtract;
     }
 
@@ -35,12 +35,12 @@ public class Config {
         this.canBucketExtract = canBucketExtract;
     }
 
-    public boolean CanBottleFill() {
-        return canBottleFill;
+    public boolean isCanDyeEntities() {
+        return canDyeEntities;
     }
 
-    public void setBottleFill(boolean canBottleFill) {
-        this.canBottleFill = canBottleFill;
+    public void setCanDyeEntities(boolean canDyeEntities) {
+        this.canDyeEntities = canDyeEntities;
     }
 
     public boolean CanBottleExtract() {

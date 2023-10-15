@@ -28,9 +28,6 @@ public class Deserialization {
         return ReadConfig().CanBucketExtract();
     }
 
-    public static boolean canBottleFill(){
-        return ReadConfig().CanBottleFill();
-    }
 
     public static boolean canBottleExtract(){
         return ReadConfig().CanBottleExtract();

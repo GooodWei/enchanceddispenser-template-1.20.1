@@ -18,9 +18,6 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
 
 
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-        if (!Deserialization.canBucketFill()){
-            defaultDispense(pointer, stack);
-        }
 
         ItemStack itemStack;
         Item item = stack.getItem();
@@ -29,6 +26,17 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
         ServerWorld world = pointer.getWorld();
         BlockState blockState = world.getBlockState(blockPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING)));
         Block block = blockState.getBlock();
+        if (block instanceof AirBlock){
+            FluidModificationItem fluidModificationItem = (FluidModificationItem) stack.getItem();
+            if (fluidModificationItem.placeFluid(null, world, blockPos, null)) {
+                fluidModificationItem.onEmptied(null, world, stack, blockPos);
+                return new ItemStack(Items.BUCKET);
+            }
+            return defaultDispense(pointer, stack);
+        }
+        if (!Deserialization.canBucketFill()){
+            return defaultDispense(pointer, stack);
+        }
         if (!block.getClass().equals(CauldronBlock.class)) {
             return defaultDispense(pointer, stack);
         }
@@ -36,25 +44,25 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
             return defaultDispense(pointer, stack);
         }
 
-        {
-            if (item instanceof PowderSnowBucketItem) {
 
-                world.setBlockState(blockPos, Blocks.POWDER_SNOW_CAULDRON.getDefaultState().with(PowderSnowCauldronBlock.LEVEL, 3));
+        if (item instanceof PowderSnowBucketItem) {
+
+            world.setBlockState(blockPos, Blocks.POWDER_SNOW_CAULDRON.getDefaultState().with(PowderSnowCauldronBlock.LEVEL, 3));
+            itemStack = new ItemStack(Items.BUCKET);
+        } else {
+            BucketItem item1 = (BucketItem) item;
+            IBucketFluidAccessor fluidAccessor = (IBucketFluidAccessor) item1;
+            if (fluidAccessor.getFluid() instanceof LavaFluid) {
+                world.setBlockState(blockPos, Blocks.LAVA_CAULDRON.getDefaultState());
+                itemStack = new ItemStack(Items.BUCKET);
+            } else if (fluidAccessor.getFluid() instanceof WaterFluid) {
+                world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
                 itemStack = new ItemStack(Items.BUCKET);
             } else {
-                BucketItem item1 = (BucketItem) item;
-                IBucketFluidAccessor fluidAccessor = (IBucketFluidAccessor) item1;
-                if (fluidAccessor.getFluid() instanceof LavaFluid) {
-                    world.setBlockState(blockPos, Blocks.LAVA_CAULDRON.getDefaultState());
-                    itemStack = new ItemStack(Items.BUCKET);
-                } else if (fluidAccessor.getFluid() instanceof WaterFluid) {
-                    world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
-                    itemStack = new ItemStack(Items.BUCKET);
-                } else {
-                    return defaultDispense(pointer, stack);
-                }
+                return defaultDispense(pointer, stack);
             }
         }
+
         world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, blockPos);
         Item item2 = itemStack.getItem();
         stack.decrement(1);

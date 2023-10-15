@@ -16,15 +16,31 @@ public class ExtractCauldronBehavior extends ItemDispenserBehavior {
     private final ItemDispenserBehavior fallbackBehavior = new ItemDispenserBehavior();
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-        if (!Deserialization.canBucketExtract()){
-            return super.dispenseSilently(pointer, stack);
-        }
-
         ItemStack itemStack;
         BlockPos blockPos;
         ServerWorld worldAccess = pointer.getWorld();
         BlockState blockState = worldAccess.getBlockState(blockPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING)));
         Block block = blockState.getBlock();
+
+        if (block instanceof FluidDrainable){
+            itemStack = ((FluidDrainable) block).tryDrainFluid(worldAccess, blockPos, blockState);
+            if (itemStack.isEmpty()) {
+                return super.dispenseSilently(pointer, stack);
+            }
+            worldAccess.emitGameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
+            Item item = itemStack.getItem();
+            stack.decrement(1);
+            if (stack.isEmpty()) {
+                return new ItemStack(item);
+            }
+            if (((DispenserBlockEntity)pointer.getBlockEntity()).addToFirstFreeSlot(new ItemStack(item)) < 0) {
+                this.fallbackBehavior.dispense(pointer, new ItemStack(item));
+            }
+            return stack;
+        }
+        if (!Deserialization.canBucketExtract()){
+            return super.dispenseSilently(pointer, stack);
+        }
         if (block instanceof AbstractCauldronBlock) {
             if (block instanceof LavaCauldronBlock){
                 worldAccess.setBlockState(blockPos, Blocks.CAULDRON.getDefaultState());
