@@ -1,9 +1,6 @@
 package com.godwei.mixin;
 
-import com.godwei.behaviors.BottleExtractCauldronBehavior;
-import com.godwei.behaviors.ExtractCauldronBehavior;
-import com.godwei.behaviors.FillCauldronBehavior;
-import com.godwei.behaviors.PaintEntityBehavior;
+import com.godwei.behaviors.*;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.item.Item;
@@ -27,6 +24,7 @@ public class DispenserBehaviorInjector {
 		FillCauldronBehavior fillCauldronBehavior = new FillCauldronBehavior();
 		BottleExtractCauldronBehavior bottleExtractCauldronBehavior = new BottleExtractCauldronBehavior();
 		PaintEntityBehavior paintEntityBehavior = new PaintEntityBehavior();
+		MineBlockBehavior mineBlockBehavior = new MineBlockBehavior();
 
 
 		BEHAVIORS.put(Items.BUCKET, extractCauldronBehavior);
@@ -52,6 +50,12 @@ public class DispenserBehaviorInjector {
 		BEHAVIORS.put(Items.WHITE_DYE, paintEntityBehavior);
 		BEHAVIORS.put(Items.YELLOW_DYE, paintEntityBehavior);
 
+		BEHAVIORS.put(Items.DIAMOND_PICKAXE, mineBlockBehavior);
+		BEHAVIORS.put(Items.GOLDEN_PICKAXE,mineBlockBehavior);
+		BEHAVIORS.put(Items.IRON_PICKAXE, mineBlockBehavior);
+		BEHAVIORS.put(Items.STONE_PICKAXE,mineBlockBehavior);
+		BEHAVIORS.put(Items.NETHERITE_PICKAXE,mineBlockBehavior);
+		BEHAVIORS.put(Items.WOODEN_PICKAXE,mineBlockBehavior);
 
 
 	}
