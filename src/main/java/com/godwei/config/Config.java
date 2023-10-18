@@ -8,15 +8,33 @@ public class Config {
     @Expose
     private boolean canBucketExtract;
     @Expose
-    private boolean canDyeEntities;
+    private boolean canPaintEntities;
     @Expose
     private boolean canBottleExtract;
 
-    public Config(boolean canBucketFill, boolean canBucketExtract, boolean canDyeEntities, boolean canBottleExtract) {
+    @Expose
+    private boolean canDispenserMineBlock;
+
+
+    public Config(boolean canBucketFill,
+                  boolean canBucketExtract,
+                  boolean canPaintEntities,
+                  boolean canBottleExtract,
+                  boolean canDispenserMineBlock) {
         this.canBucketFill = canBucketFill;
         this.canBucketExtract = canBucketExtract;
-        this.canDyeEntities = canDyeEntities;
+        this.canPaintEntities = canPaintEntities;
         this.canBottleExtract = canBottleExtract;
+        this.canDispenserMineBlock = canDispenserMineBlock;
+    }
+
+
+    public boolean isCanDispenserMineBlock() {
+        return canDispenserMineBlock;
+    }
+
+    public void setCanDispenserMineBlock(boolean canDispenserMineBlock) {
+        this.canDispenserMineBlock = canDispenserMineBlock;
     }
 
     public boolean CanBucketFill() {
@@ -35,12 +53,12 @@ public class Config {
         this.canBucketExtract = canBucketExtract;
     }
 
-    public boolean isCanDyeEntities() {
-        return canDyeEntities;
+    public boolean isCanPaintEntities() {
+        return canPaintEntities;
     }
 
-    public void setCanDyeEntities(boolean canDyeEntities) {
-        this.canDyeEntities = canDyeEntities;
+    public void setCanPaintEntities(boolean canPaintEntities) {
+        this.canPaintEntities = canPaintEntities;
     }
 
     public boolean CanBottleExtract() {

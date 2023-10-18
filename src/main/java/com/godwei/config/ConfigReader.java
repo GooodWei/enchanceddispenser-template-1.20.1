@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class Deserialization {
+public class ConfigReader {
     private static final String location = "..\\config\\EnhancedDispenser\\config.json";
 
     public static Config ReadConfig() {
@@ -17,7 +17,7 @@ public class Deserialization {
             JsonReader reader = new JsonReader(fileReader);
             return new Gson().fromJson(reader, Config.class);
         } catch (FileNotFoundException e) {
-            return new Config(true, true, true, true);
+            return new Config(true, true, true, true, true);
         }
     }
     public static boolean canBucketFill(){
@@ -28,6 +28,13 @@ public class Deserialization {
         return ReadConfig().CanBucketExtract();
     }
 
+    public static boolean canPaintEntities(){
+        return ReadConfig().isCanPaintEntities();
+    }
+
+    public static boolean canMineBlocks(){
+        return ReadConfig().isCanDispenserMineBlock();
+    }
 
     public static boolean canBottleExtract(){
         return ReadConfig().CanBottleExtract();

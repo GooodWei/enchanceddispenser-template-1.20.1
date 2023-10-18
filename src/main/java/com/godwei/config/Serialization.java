@@ -21,7 +21,7 @@ public class Serialization {
         }
         if (!file.exists()) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            Config cfg = new Config(true, true, true, true);
+            Config cfg = new Config(true ,true, true, true, true);
             String config = gson.toJson(cfg);
             try {
                 FileWriter writer = new FileWriter(file);

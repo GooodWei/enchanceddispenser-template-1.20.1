@@ -58,5 +58,6 @@ public class DispenserBehaviorInjector {
 		BEHAVIORS.put(Items.WOODEN_PICKAXE,mineBlockBehavior);
 
 
+
 	}
 }

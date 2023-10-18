@@ -1,6 +1,6 @@
 package com.godwei.behaviors;
 
-import com.godwei.config.Deserialization;
+import com.godwei.config.ConfigReader;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.entity.DispenserBlockEntity;
@@ -38,7 +38,7 @@ public class ExtractCauldronBehavior extends ItemDispenserBehavior {
             }
             return stack;
         }
-        if (!Deserialization.canBucketExtract()){
+        if (!ConfigReader.canBucketExtract()){
             return super.dispenseSilently(pointer, stack);
         }
         if (block instanceof AbstractCauldronBlock) {

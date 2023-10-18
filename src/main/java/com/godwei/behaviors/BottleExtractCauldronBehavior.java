@@ -1,6 +1,6 @@
 package com.godwei.behaviors;
 
-import com.godwei.config.Deserialization;
+import com.godwei.config.ConfigReader;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -34,7 +34,7 @@ public class BottleExtractCauldronBehavior extends FallibleItemDispenserBehavior
     }
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-        if (!Deserialization.canBottleExtract()){
+        if (!ConfigReader.canBottleExtract()){
             return super.dispenseSilently(pointer, stack);
         }
         this.setSuccess(false);
