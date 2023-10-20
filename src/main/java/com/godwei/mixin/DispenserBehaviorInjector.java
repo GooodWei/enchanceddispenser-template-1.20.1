@@ -1,6 +1,7 @@
 package com.godwei.mixin;
 
 import com.godwei.behaviors.*;
+import com.godwei.config.ConfigReader;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.item.Item;
@@ -27,36 +28,49 @@ public class DispenserBehaviorInjector {
 		MineBlockBehavior mineBlockBehavior = new MineBlockBehavior();
 
 
-		BEHAVIORS.put(Items.BUCKET, extractCauldronBehavior);
-		BEHAVIORS.put(Items.WATER_BUCKET, fillCauldronBehavior);
-		BEHAVIORS.put(Items.LAVA_BUCKET, fillCauldronBehavior);
-		BEHAVIORS.put(Items.POWDER_SNOW_BUCKET, fillCauldronBehavior);
-		BEHAVIORS.put(Items.GLASS_BOTTLE, bottleExtractCauldronBehavior);
+		if (ConfigReader.canBucketExtract()) {
+			BEHAVIORS.put(Items.BUCKET, extractCauldronBehavior);
+		}
 
-		BEHAVIORS.put(Items.BLACK_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.BLUE_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.BROWN_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.CYAN_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.GRAY_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.GREEN_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.LIGHT_BLUE_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.LIGHT_GRAY_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.LIME_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.MAGENTA_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.ORANGE_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.PINK_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.PURPLE_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.RED_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.WHITE_DYE, paintEntityBehavior);
-		BEHAVIORS.put(Items.YELLOW_DYE, paintEntityBehavior);
 
-		BEHAVIORS.put(Items.DIAMOND_PICKAXE, mineBlockBehavior);
-		BEHAVIORS.put(Items.GOLDEN_PICKAXE,mineBlockBehavior);
-		BEHAVIORS.put(Items.IRON_PICKAXE, mineBlockBehavior);
-		BEHAVIORS.put(Items.STONE_PICKAXE,mineBlockBehavior);
-		BEHAVIORS.put(Items.NETHERITE_PICKAXE,mineBlockBehavior);
-		BEHAVIORS.put(Items.WOODEN_PICKAXE,mineBlockBehavior);
+		if (ConfigReader.canBucketFill()) {
+			BEHAVIORS.put(Items.WATER_BUCKET, fillCauldronBehavior);
+			BEHAVIORS.put(Items.LAVA_BUCKET, fillCauldronBehavior);
+			BEHAVIORS.put(Items.POWDER_SNOW_BUCKET, fillCauldronBehavior);
+		}
 
+
+		if (ConfigReader.canBottleExtract()) {
+			BEHAVIORS.put(Items.GLASS_BOTTLE, bottleExtractCauldronBehavior);
+		}
+
+		if (ConfigReader.canPaintEntities()) {
+			BEHAVIORS.put(Items.BLACK_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.BLUE_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.BROWN_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.CYAN_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.GRAY_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.GREEN_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.LIGHT_BLUE_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.LIGHT_GRAY_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.LIME_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.MAGENTA_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.ORANGE_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.PINK_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.PURPLE_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.RED_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.WHITE_DYE, paintEntityBehavior);
+			BEHAVIORS.put(Items.YELLOW_DYE, paintEntityBehavior);
+		}
+
+		if (ConfigReader.canMineBlocks()) {
+			BEHAVIORS.put(Items.DIAMOND_PICKAXE, mineBlockBehavior);
+			BEHAVIORS.put(Items.GOLDEN_PICKAXE,mineBlockBehavior);
+			BEHAVIORS.put(Items.IRON_PICKAXE, mineBlockBehavior);
+			BEHAVIORS.put(Items.STONE_PICKAXE,mineBlockBehavior);
+			BEHAVIORS.put(Items.NETHERITE_PICKAXE,mineBlockBehavior);
+			BEHAVIORS.put(Items.WOODEN_PICKAXE,mineBlockBehavior);
+		}
 
 
 	}

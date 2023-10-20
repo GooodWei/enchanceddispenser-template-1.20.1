@@ -1,6 +1,5 @@
 package com.godwei.behaviors;
 
-import com.godwei.config.ConfigReader;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.entity.DispenserBlockEntity;
@@ -37,9 +36,6 @@ public class ExtractCauldronBehavior extends ItemDispenserBehavior {
                 this.fallbackBehavior.dispense(pointer, new ItemStack(item));
             }
             return stack;
-        }
-        if (!ConfigReader.canBucketExtract()){
-            return super.dispenseSilently(pointer, stack);
         }
         if (block instanceof AbstractCauldronBlock) {
             if (block instanceof LavaCauldronBlock){

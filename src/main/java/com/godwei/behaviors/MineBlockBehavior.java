@@ -1,6 +1,5 @@
 package com.godwei.behaviors;
 
-import com.godwei.config.ConfigReader;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -29,9 +28,6 @@ public class MineBlockBehavior extends ItemDispenserBehavior {
 
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-        if (!ConfigReader.canMineBlocks()) {
-            return super.dispenseSilently(pointer, stack);
-        }
         BlockPos blockPos;
         ServerWorld worldAccess = pointer.getWorld();
         BlockState blockState = worldAccess.getBlockState(blockPos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING)));

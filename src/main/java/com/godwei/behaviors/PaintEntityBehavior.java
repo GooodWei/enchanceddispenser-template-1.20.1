@@ -2,9 +2,9 @@ package com.godwei.behaviors;
 
 import com.godwei.Utlis.ColoredItems;
 import com.godwei.Utlis.ItemType;
-import com.godwei.config.ConfigReader;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.DyeItem;
@@ -19,31 +19,28 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class PaintEntityBehavior extends ItemDispenserBehavior {
 
-    private static final List<ItemType> ITEM_TYPE_LIST = Arrays.asList(ItemType.WOOL,
-            ItemType.CONCRETE_POWDER,
-            ItemType.GLASS);
 
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-        if (!ConfigReader.canPaintEntities()) {
-            return super.dispenseSilently(pointer, stack);
-        }
         BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
         Box box = new Box(pos);
         ServerWorld world = pointer.getWorld();
         List<SheepEntity> sheep = world.getEntitiesByClass(SheepEntity.class, box,
                 Objects::nonNull);
-        List<ItemEntity> itemEntities = world.getEntitiesByClass(ItemEntity.class, box, Objects::nonNull);
-        Map<ItemType, List<ItemEntity>> typeListMap = getTypeItemEntityList(itemEntities);
+        //Deprecated because cost too much time
+        //List<ItemEntity> itemEntities = world.getEntitiesByClass(ItemEntity.class, box, Objects::nonNull);
+        //Map<ItemType, List<ItemEntity>> typeListMap = getTypeItemEntityList(itemEntities);
+        Map<ItemType, List<ItemEntity>> typeListMap = getTypeItemEntityList(world, box);
         DyeItem dye = (DyeItem) stack.getItem();
         DyeColor color = dye.getColor();
         AtomicBoolean isEmpty = new AtomicBoolean(true);
         typeListMap.forEach(
-                (k,v) -> {
-                    if (!v.isEmpty()){
+                (k, v) -> {
+                    if (!v.isEmpty()) {
                         isEmpty.set(false);
                     }
                 }
@@ -106,7 +103,7 @@ public class PaintEntityBehavior extends ItemDispenserBehavior {
 
     private static Map<ItemType, List<ItemEntity>> getTypeItemEntityList(@NotNull List<ItemEntity> entities) {
         Map<ItemType, List<ItemEntity>> map = new HashMap<>();
-        for (ItemType type : PaintEntityBehavior.ITEM_TYPE_LIST) {
+        for (ItemType type : ItemType.STAINABLE_ITEM_TYPE_LIST) {
             List<Item> typeItemList = type.getItemList();
             List<ItemEntity> itemEntities = new ArrayList<>();
             entities.forEach(
@@ -118,6 +115,23 @@ public class PaintEntityBehavior extends ItemDispenserBehavior {
             );
             map.put(type, itemEntities);
         }
+        return map;
+    }
+
+    private static Map<ItemType, List<ItemEntity>> getTypeItemEntityList(@NotNull ServerWorld world, @NotNull Box area) {
+        Map<ItemType, List<ItemEntity>> map = new HashMap<>();
+        for (ItemType type : ItemType.STAINABLE_ITEM_TYPE_LIST) {
+            List<Entity> entities = world.getOtherEntities(null, area,
+                    ie -> {
+                        if (ie instanceof ItemEntity itemEntity) {
+                            return type.getItemList().contains(itemEntity.getStack().getItem());
+                        }
+                        return false;
+                    });
+            List<ItemEntity> collect = entities.stream().map(i -> (ItemEntity) i).collect(Collectors.toList());
+            map.put(type, collect);
+        }
+
         return map;
     }
 }

@@ -1,6 +1,5 @@
 package com.godwei.behaviors;
 
-import com.godwei.config.ConfigReader;
 import com.godwei.mixin.IBucketFluidAccessor;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -32,9 +31,6 @@ public class FillCauldronBehavior extends ItemDispenserBehavior {
                 fluidModificationItem.onEmptied(null, world, stack, blockPos);
                 return new ItemStack(Items.BUCKET);
             }
-            return defaultDispense(pointer, stack);
-        }
-        if (!ConfigReader.canBucketFill()){
             return defaultDispense(pointer, stack);
         }
         if (!block.getClass().equals(CauldronBlock.class)) {
